@@ -1,0 +1,118 @@
+
+1) (2 Marks) Write a query to list all system databases in SQL Server.
+
+select name from sys.databases;
+-------------------------------------------------------
+2) (2 Marks) Identify the physical database files (MDF, LDF) of a user-defined database named "SalesDB" using a SQL query.
+
+
+select name, physical_name, type_desc from sys.master_files where database_id=DB_ID('SalesDB');
+ 
+---------------------------------------------------------------
+3) (2 Marks) Create a user-defined database named "InventoryDB" with a primary data file of 5MB and a log file of 2MB.
+
+create database InventoryDB  
+ON  
+(  
+    NAME = InventoryDB_Data,  
+    FILENAME = 'PATH TO...\InventoryDB.mdf',  
+    SIZE = 5MB,  
+    MAXSIZE = 50MB,  
+    FILEGROWTH = 1MB  
+)  
+log on
+(  
+    NAME = InventoryDB_Log,  
+    FILENAME = 'PATH TO...\InventoryDB.ldf',  
+    SIZE = 2MB,  
+    MAXSIZE = 20MB,  
+    FILEGROWTH = 512KB  
+);  
+
+--------------------------------------------------
+4) (2 Marks) Rename the database "InventoryDB" to "StockDB" using a SQL query.
+
+alter InventoryDB modify name = StockDB;
+---------------------------------------------------
+5) (2 Marks) Drop the database "StockDB" using a SQL query.
+
+drop database StockDB;
+
+------------------------------------------------
+6) (2 Marks) Write a query to display all available data types in SQL Server.
+
+SELECT name AS DataType
+FROM sys.types  
+ORDER BY name;
+
+-------------------------------------------------
+7) (2 Marks) Create a table "Products" with the following columns:
+    ProductID (Integer, Primary Key)
+ProductName (Variable-length string, max 50 characters, Not Null)
+Price (Decimal with 2 decimal places)
+StockQuantity (Integer, Default value 0)
+
+
+create table Products(ProductID int identity(1,1) Primary Key, ProductName varchar(50) not null, Price decimal(10,2), StockQuantity int default 0);
+
+-------------------------------------------------------------------
+
+8)(2 Marks) Modify the "Products" table to add a new column Category (VARCHAR(30)).
+
+alter table Products add Category varchar(30);
+
+---------------------------------------------------------
+
+9)(2 Marks) Rename the table "Products" to "Inventory".
+
+EXEC sp_rename 'Products', 'Inventory';
+
+-----------------------------------------------------
+
+10)(2 Marks) Drop the "Inventory" table from the database.
+
+drop table Inventory;
+
+-----------------------------------------------------
+11)(5 Marks) Identify and list the system databases available in SQL Server. Provide a brief description of each.
+
+select name from sys.databases where database_id<=4;
+
+-------------------------------------------------------
+12)(5 Marks) Write a query to display all database files (MDF, LDF, NDF) for a specific database.
+
+select * from sys.master_files where database_id = DB_ID("your_database")
+
+----------------------------------------------------------
+13) (5 Marks) Create a new user-defined database named SalesDB with a primary data file of 10MB and a log file of 5MB.
+
+create dabatase SalesDB  
+on 
+(  
+    NAME = SalesDB_Data,  
+    FILENAME = 'PATH TO...\SalesDB.mdf',  
+    SIZE = 10MB,  
+    MAXSIZE = 50MB,  
+    FILEGROWTH = 1MB  
+)  
+log on 
+(  
+    NAME = SalesDB_Log,  
+    FILENAME = 'PATH TO...\SalesDB.ldf',  
+    SIZE = 5MB,  
+    MAXSIZE = 20MB,  
+    FILEGROWTH = 512KB  
+);  
+
+---------------------------------------------------
+14)(5 Marks) Rename the database SalesDB to RetailDB using an SQL query.
+
+exec sp_rename 'SalesDB','RetailDB';
+
+--------------------------------------------------
+15) (5 Marks) Drop the RetailDB database safely, ensuring that no active connections exist before deletion.
+
+
+select db_name(database_id), count(Session_id) from sys_exec_dessions where database_id=DB_ID('retailDB') group by database_id;
+
+--------------------------------------------------

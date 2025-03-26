@@ -1,0 +1,87 @@
+1) Write a query to list all system databases available in MS SQL Server.
+
+select name from sys.databases;
+
+---------------------------------------------
+
+2) Write a query to retrieve the physical file locations (MDF & LDF) of a database named "CompanyDB".
+
+select name, physical_name,type_desc from sys.master_files where database_id=DB_ID('CompanyDB');
+
+--------------------------------------------
+
+3) Write a query to create a database "HRDB" with the following specifications:
+
+Primary Data File: 10MB, Autogrow by 2MB
+
+Log File: 5MB, Autogrow by 1MB
+
+create database HRDB
+( 
+    NAME = HRDB_Data,  
+    FILENAME = 'PATH TO...\HRDB.mdf',  
+    SIZE = 10MB,  
+    MAXSIZE = 50MB,  
+    FILEGROWTH = 2MB
+)
+log on
+(
+    NAME = HRDB_Data,  
+    FILENAME = 'PATH TO...\HRDB.mdf',  
+    SIZE = 5MB,  
+    MAXSIZE = 50MB,  
+    FILEGROWTH = 1MB
+);
+
+-------------------------------------------
+
+4) Rename "HRDB" to "EmployeeDB" using SQL commands.
+
+
+alter HRDB modify name = EmployeeDB;
+-------------------------------------------
+
+5) Drop the database "EmployeeDB" from the system.
+
+drop database EmployeeDB;
+
+-----------------------------------------------
+
+6)Write a query to display all supported data types in MS SQL Server.
+
+select name from sys.types order by name;
+
+----------------------------------------------------
+
+7)Create a table "Employees" with the following fields:
+
+EmpID (Integer, Primary Key)
+
+EmpName (Variable-length string, max 100 characters, Not Null)
+
+JoinDate (Date, Not Null)
+
+Salary (Decimal with 2 decimal places, Default: 30000.00)
+
+
+create table Employees( EmpID int identity(1,1) primary key, EmpName varchar(100) not null,JoinDate date not null, Salary Decimal(10,2) default 30000.00);
+
+----------------------------------------------------------
+
+8)Add a new column "Department" (VARCHAR(50)) to the "Employees" table.
+
+alter Employees add Department varchar(50);
+
+----------------------------------------------------------
+
+9)Rename the table "Employees" to "Staff".
+
+exec sp_rename 'Employees', 'Staff';
+
+----------------------------------------------------------
+
+10)Drop the table "Staff" from the database.
+
+drop table Staff;
+
+--------------------------------------------------------------
